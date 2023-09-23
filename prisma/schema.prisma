@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(uuid()) 
+  username String    @unique
+  room     Room      @relation(fields: [roomId], references: [id])
+  roomId   String
+  messages Message[] @relation("Sender")
+}
+
+model Room {
+  id      String   @id @default(uuid()) 
+  name    String   @unique
+  users   User[]   
+  messages Message[] 
+}
+
+model Message {
+  id          String   @id @default(uuid()) 
+  body        String
+  senderId    String
+  user        User     @relation("Sender",fields: [senderId], references: [id])
+  sentAt      DateTime @default(now())
+  ownedByCurrentUser Boolean?
+  roomId      String   
+  room        Room     @relation(fields: [roomId], references: [id]) 
+}
+
+
+// model User {
+//   id              String       @id @default(uuid())
+//   username        String       @unique
+//   sentMessages    Message[]    @relation("Sender")
+//   receivedMessages Message[]    @relation("Receiver")
+//   rooms           RoomUser[]    @relation("User")
+// }
+
+// model Room {
+//   id   String   @id @default(uuid())
+//   name String   @unique
+//   users RoomUser[]
+// }
+
+// model RoomUser {
+//   id    String @id @default(uuid())
+//   room  Room   @relation(fields: [roomId], references: [id])
+//   roomId String
+//   userId String
+//   user  User   @relation("User", fields: [userId], references: [id])
+// }
+
+// model Message {
+//   id          String      @id @default(uuid())
+//   text        String
+//   sentAt      DateTime
+//   sender      User     @relation("Sender", fields: [senderId], references: [id])
+//   senderId    String
+//   receiver    User     @relation("Receiver", fields: [receiverId], references: [id])
+//   receiverId  String
+// }
+
