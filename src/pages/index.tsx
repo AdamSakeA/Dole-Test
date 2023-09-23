@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 
 export default function Home() {
   const [roomName, setRoomName] = useState("");
-  const [roomid, setRoomId] = useState("");
   const router = useRouter();
 
   const handleRoomNameChange = (event: FormEvent<HTMLInputElement>) => {
@@ -29,7 +28,7 @@ export default function Home() {
               className="border-b-2 outline-none bg-transparent focus:border-b-red-500 transition-all duration-300 mr-5 placeholder:text-gray-300"
             />
             <button
-              onClick={() => setRoomId(roomName)}
+              onClick={() => handleNavigate(roomName)}
               className="bg-red-500 text-white font-bold rounded-3xl px-10 py-2 w-full hover:bg-white hover:border-2 hover:border-red-500 hover:text-red-500 transition-all duration-300"
             >
               Join
